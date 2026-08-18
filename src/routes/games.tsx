@@ -67,26 +67,25 @@ function GamesPage() {
         <Logo size={120} />
 
         <div
-          className="mx-auto mt-5 overflow-hidden rounded-2xl border border-primary/40 shadow-[0_0_35px_rgba(144,214,0,0.18)]"
+          className="mx-auto mt-5 flex items-center justify-center overflow-hidden rounded-2xl border border-primary/40 bg-black/40 shadow-[0_0_35px_rgba(144,214,0,0.18)]"
           style={{ width: 350, maxWidth: "100%", height: 180 }}
         >
           <video
             src="https://www.image2url.com/r2/default/videos/1787062476031-24e4168d-512a-415a-acaa-e2da3d6747c3.mp4"
             autoPlay
             loop
+            muted
             ref={(el) => {
               if (!el) return;
-              el.muted = false;
-              el.play().catch(() => {
-                el.muted = true;
-                el.play().catch(() => {});
-              });
+              el.muted = true;
+              el.play().catch(() => {});
             }}
             playsInline
             controls
             preload="auto"
-            className="h-full w-full object-cover"
+            className="max-h-[85%] max-w-[85%] object-contain"
           />
+
         </div>
 
 
