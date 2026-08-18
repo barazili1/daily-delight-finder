@@ -83,7 +83,7 @@ function GamesPage() {
             playsInline
             controls
             preload="auto"
-            className="max-h-[85%] max-w-[85%] object-contain"
+            className="h-full w-full object-cover"
           />
 
         </div>
