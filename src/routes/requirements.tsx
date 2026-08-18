@@ -46,6 +46,13 @@ export const Route = createFileRoute("/requirements")({
 
 const PROMO = "KAJO117";
 
+const PLATFORM_LINKS: Record<string, string> = {
+  "1xBet": "https://reffpa.com/L?tag=d_2845435m_27409c_&site=2845435&ad=27409",
+  LineBet: "https://lb-aff.com//L?tag=d_3386416m_66803c_apk1&site=3386416&ad=66803",
+  GreenBet: "https://refpa79184.com/L?tag=d_5982434m_132250c_&site=5982434&ad=132250",
+  WinWin: "https://refpa49781.com/L?tag=d_5981657m_68383c_&site=5981657&ad=68383",
+};
+
 /* ---------- shared bits ---------- */
 
 function Ring({ value }: { value: number }) {
