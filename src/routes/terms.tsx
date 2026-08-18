@@ -203,9 +203,14 @@ function TermsPage() {
         {/* actions */}
         <Reveal>
           <div className="mt-10 flex gap-3">
-            <button className="flex flex-1 items-center justify-center gap-2 rounded-2xl border border-white/70 bg-white/95 py-3.5 text-sm font-bold text-black transition active:scale-95">
+            <a
+              href="https://t.me/A_R_1_R"
+              target="_blank"
+              rel="noreferrer"
+              className="flex flex-1 items-center justify-center gap-2 rounded-2xl border border-white/70 bg-white/95 py-3.5 text-sm font-bold text-black transition active:scale-95"
+            >
               <Headphones className="h-4 w-4" /> التواصل مع الدعم
-            </button>
+            </a>
             <button
               onClick={submit}
               disabled={!ready}
@@ -223,7 +228,7 @@ function TermsPage() {
         {/* socials */}
         <div className="mt-14 flex gap-3">
           <a
-            href="https://t.me/"
+            href="https://t.me/IIIIIIIIIIIIIIIIIIIIII00"
             target="_blank"
             rel="noreferrer"
             className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-primary/40 bg-transparent py-3 text-sm font-bold text-foreground backdrop-blur-sm transition hover:border-primary"
@@ -231,7 +236,7 @@ function TermsPage() {
             <Send className="h-4 w-4 text-primary" /> Telegram channel
           </a>
           <a
-            href="https://youtube.com/"
+            href="https://youtube.com"
             target="_blank"
             rel="noreferrer"
             className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-primary/40 bg-transparent py-3 text-sm font-bold text-foreground backdrop-blur-sm transition hover:border-primary"
