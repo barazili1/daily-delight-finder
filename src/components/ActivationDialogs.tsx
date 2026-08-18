@@ -1,8 +1,7 @@
 import { useState } from "react";
-import { useServerFn } from "@tanstack/react-start";
 import { KeyRound, Ticket, ShieldCheck, Loader2 } from "lucide-react";
 import { Overlay } from "@/components/Overlay";
-import { verifyActivationCode } from "@/lib/codes.functions";
+import { supabase } from "@/integrations/supabase/client";
 import { saveSession, type ActiveSession } from "@/lib/session";
 
 export function ChoiceDialog({
