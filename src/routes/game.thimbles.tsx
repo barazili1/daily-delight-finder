@@ -5,7 +5,7 @@ import { TopBar } from "@/components/TopBar";
 import { GameHeaderStats } from "@/components/GameHeaderStats";
 import { WinFeed } from "@/components/WinFeed";
 import thimble from "@/assets/thimble-new.png";
-import thimblesLogo from "@/assets/thimbles-logo.png";
+import platformLogo from "@/assets/logo.png";
 import ball from "@/assets/steel-ball.png";
 
 export const Route = createFileRoute("/game/thimbles")({
@@ -48,7 +48,7 @@ function ThimblesGame() {
       <GameHeaderStats />
 
       <div className="mx-auto max-w-md px-4 pt-4">
-        <img src={thimblesLogo} alt="Thimbles game logo" width={140} height={140} className="mx-auto h-[110px] w-auto object-contain" />
+        <img src={platformLogo} alt="CRAZY VIP logo" width={140} height={140} className="mx-auto h-[110px] w-auto object-contain" />
 
         <div className="mt-8 flex items-end justify-center gap-4" style={{ height: 240 }}>
           {[0, 1, 2].map((i) => (
@@ -61,7 +61,7 @@ function ThimblesGame() {
                   loading="lazy"
                   width={40}
                   height={40}
-                  className="absolute bottom-[20px] left-1/2 z-0 h-[40px] w-[40px] -translate-x-1/2"
+                  className="absolute bottom-[35px] left-1/2 z-0 h-[40px] w-[40px] -translate-x-1/2"
                 />
               )}
               <div
