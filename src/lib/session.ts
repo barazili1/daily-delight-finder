@@ -26,3 +26,12 @@ export function saveUserId(id: string) {
 export function readUserId() {
   return localStorage.getItem(ID_KEY) ?? "";
 }
+
+export function ensureUserId() {
+  let id = readUserId();
+  if (!id) {
+    id = `U${Math.random().toString(36).slice(2, 8).toUpperCase()}${Date.now().toString(36).toUpperCase().slice(-4)}`;
+    saveUserId(id);
+  }
+  return id;
+}

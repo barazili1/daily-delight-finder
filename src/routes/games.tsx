@@ -68,7 +68,7 @@ function GamesPage() {
 
         <div
           className="mx-auto mt-5 flex items-center justify-center overflow-hidden rounded-2xl border border-primary/40 bg-black/40 shadow-[0_0_35px_rgba(144,214,0,0.18)]"
-          style={{ width: 350, maxWidth: "100%", height: 180 }}
+          style={{ width: 350, maxWidth: "100%", height: 220 }}
         >
           <video
             src="https://www.image2url.com/r2/default/videos/1787062476031-24e4168d-512a-415a-acaa-e2da3d6747c3.mp4"
@@ -169,7 +169,16 @@ function GamesPage() {
         onUse={onUse}
         onGet={onGet}
       />
-      <CodeDialog open={codeOpen} onClose={() => setCodeOpen(false)} onVerified={onVerified} />
+      <CodeDialog
+        open={codeOpen}
+        onClose={() => setCodeOpen(false)}
+        onVerified={onVerified}
+        onAdmin={() => {
+          setCodeOpen(false);
+          setChoice(null);
+          navigate({ to: "/admin" });
+        }}
+      />
 
       <LoadingDialog open={loading} />
     </main>

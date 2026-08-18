@@ -31,9 +31,8 @@ async function sendWelcome(token: string, chatId: number, name: string) {
   await fetch(API(token, "sendPhoto"), { method: "POST", body: form });
 }
 
-async function sendCode(token: string, chatId: number, code: string, minutes: number, expiresAt: Date) {
+async function sendCode(token: string, chatId: number, code: string, minutes: number) {
   const url = `https://placehold.co/1000x420/0a0a0a/90D600/png?text=${encodeURIComponent(code)}&font=montserrat`;
-  const expire = expiresAt.toISOString().slice(11, 16);
   await fetch(API(token, "sendPhoto"), {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -43,8 +42,18 @@ async function sendCode(token: string, chatId: number, code: string, minutes: nu
       parse_mode: "HTML",
       caption:
         `✅ <b>كود التفعيل الخاص بك</b>\n\n<code>${code}</code>\n\n` +
-        `⏳ الوقت المتبقي: <b>${minutes} دقيقة</b>\n🕒 ينتهي في: <b>${expire} UTC</b>\n\n` +
+        `⏳ مدة الكود: <b>${minutes} دقيقة</b> تبدأ من أول مرة تستخدمه فيها\n\n` +
         `انسخ الكود وارجع للتطبيق ثم اضغط «استخدام كود تفعيل».`,
+    }),
+  });
+
+  await fetch(API(token, "sendMessage"), {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      chat_id: chatId,
+      parse_mode: "HTML",
+      text: "⏳ <b>في انتظار...</b>\n\nيتم التحقق من بياناتك الآن، سيصلك إشعار فور الانتهاء من المراجعة.",
     }),
   });
 }
@@ -90,17 +99,26 @@ export const Route = createFileRoute("/api/public/telegram")({
 
         const code = makeCode();
         const minutes = 30 + Math.floor(Math.random() * 31);
-        const expiresAt = new Date(Date.now() + minutes * 60_000);
+        // The countdown only starts when the user first enters the code in the app,
+        // so store a far-future placeholder here.
+        const placeholder = new Date(Date.now() + 365 * 24 * 60 * 60_000);
 
         const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
         await supabaseAdmin.from("activation_codes").insert({
           code,
           telegram_id: String(chatId),
           user_id: arg ?? null,
-          expires_at: expiresAt.toISOString(),
+          duration_minutes: minutes,
+          expires_at: placeholder.toISOString(),
         });
 
-        await sendCode(token, chatId, code, minutes, expiresAt);
+        // Link the telegram chat to the user's submission so review results can be delivered.
+        await supabaseAdmin
+          .from("submissions")
+          .update({ telegram_id: String(chatId) })
+          .eq("user_id", arg);
+
+        await sendCode(token, chatId, code, minutes);
         return new Response("ok");
       },
     },
