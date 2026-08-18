@@ -80,7 +80,7 @@ export function CodeDialog({
         };
         saveSession(s);
         onVerified(s);
-      } else if (res.status === "expired") {
+      } else if (res?.status === "expired") {
         setError("الكود صلاحيته منتهية");
       } else {
         setError("كود غير صحيح");
