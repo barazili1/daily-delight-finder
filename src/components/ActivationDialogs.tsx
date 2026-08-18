@@ -1,8 +1,7 @@
 import { useState } from "react";
-import { useServerFn } from "@tanstack/react-start";
 import { KeyRound, Ticket, ShieldCheck, Loader2 } from "lucide-react";
 import { Overlay } from "@/components/Overlay";
-import { verifyActivationCode } from "@/lib/codes.functions";
+import { supabase } from "@/integrations/supabase/client";
 import { saveSession, type ActiveSession } from "@/lib/session";
 
 export function ChoiceDialog({
@@ -53,7 +52,6 @@ export function CodeDialog({
   onClose: () => void;
   onVerified: (s: ActiveSession) => void;
 }) {
-  const verify = useServerFn(verifyActivationCode);
   const [code, setCode] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -63,12 +61,26 @@ export function CodeDialog({
     setBusy(true);
     setError(null);
     try {
-      const res = await verify({ data: { code } });
-      if (res.status === "ok") {
-        const s = { code: code.trim().toUpperCase(), userId: res.userId, expiresAt: res.expiresAt };
+      const { data, error: rpcError } = await (
+        supabase.rpc as unknown as (
+          fn: string,
+          args: Record<string, unknown>,
+        ) => Promise<{
+          data: { status: string; user_id: string | null; expires_at: string | null }[] | null;
+          error: unknown;
+        }>
+      )("verify_activation_code", { _code: code });
+      if (rpcError) throw rpcError;
+      const res = data?.[0];
+      if (res?.status === "ok") {
+        const s = {
+          code: code.trim().toUpperCase(),
+          userId: res.user_id ?? "",
+          expiresAt: res.expires_at ?? "",
+        };
         saveSession(s);
         onVerified(s);
-      } else if (res.status === "expired") {
+      } else if (res?.status === "expired") {
         setError("الكود صلاحيته منتهية");
       } else {
         setError("كود غير صحيح");
