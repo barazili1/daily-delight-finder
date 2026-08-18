@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useRequireSession } from "@/lib/guard";
 import { useState } from "react";
 import { Play, RotateCcw } from "lucide-react";
 import { TopBar } from "@/components/TopBar";
@@ -23,6 +24,7 @@ export const Route = createFileRoute("/game/wildwest")({
 const TREASURE = "https://cdn.phototourl.com/free/2026-08-18-6f899145-8261-4176-b043-7e48e5d494eb.jpg";
 
 function WildWestGame() {
+  useRequireSession();
   const [mode, setMode] = useState<2 | 3>(2);
   const [hit, setHit] = useState<number | null>(null);
 

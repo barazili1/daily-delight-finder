@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useRequireSession } from "@/lib/guard";
 import { useState } from "react";
 import { Play, RotateCcw } from "lucide-react";
 import { TopBar } from "@/components/TopBar";
@@ -28,6 +29,7 @@ const BAD = "https://logo12.gamer.gd/poi.png";
 const ODDS = ["1.23", "1.54", "1.93", "2.41", "4.02", "6.71", "11.18", "27.97", "69.93", "349.43"];
 
 function AppleGame() {
+  useRequireSession();
   const [rows, setRows] = useState<number[] | null>(null);
 
   const start = () => setRows(Array.from({ length: 10 }, () => Math.floor(Math.random() * 5)));

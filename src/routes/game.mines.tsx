@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useRequireSession } from "@/lib/guard";
 import { useState } from "react";
 import { Play, RotateCcw } from "lucide-react";
 import { TopBar } from "@/components/TopBar";
@@ -25,6 +26,7 @@ const CELL = "https://cdn.phototourl.com/free/2026-08-18-1a7d4e7f-96a1-46e9-a0a2
 const GEM = "https://cdn.phototourl.com/free/2026-08-18-2abb19e9-0aa2-4bb2-ab50-5a697a015467.png";
 
 function MinesGame() {
+  useRequireSession();
   const [count, setCount] = useState(3);
   const [gems, setGems] = useState<number[] | null>(null);
 
