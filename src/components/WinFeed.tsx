@@ -16,9 +16,10 @@ function makeRow(id: number): Row {
 }
 
 export function WinFeed() {
-  const [rows, setRows] = useState<Row[]>(() => Array.from({ length: 6 }, (_, i) => makeRow(i)));
+  const [rows, setRows] = useState<Row[]>([]);
 
   useEffect(() => {
+    setRows(Array.from({ length: 6 }, (_, i) => makeRow(i)));
     let n = 100;
     const t = setInterval(() => {
       setRows((r) => [makeRow(n++), ...r].slice(0, 6));

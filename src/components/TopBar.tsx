@@ -1,11 +1,11 @@
 import { ChevronLeft, Users } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useRouter } from "@tanstack/react-router";
+import { useNavigate } from "@tanstack/react-router";
 import { Brand } from "@/components/Brand";
 
 export function TopBar({ showBack = true }: { showBack?: boolean }) {
   const [online, setOnline] = useState(1284);
-  const router = useRouter();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const t = setInterval(() => {
@@ -22,7 +22,7 @@ export function TopBar({ showBack = true }: { showBack?: boolean }) {
             <button
               type="button"
               aria-label="رجوع"
-              onClick={() => router.history.back()}
+              onClick={() => navigate({ to: "/games" })}
               className="flex h-8 w-8 items-center justify-center rounded-full border border-primary/40 bg-transparent text-primary transition-colors active:scale-95 hover:bg-primary/10"
             >
               <ChevronLeft className="h-4 w-4" />
