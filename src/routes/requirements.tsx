@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { ensureUserId } from "@/lib/session";
 import {
   Copy,
   Check,
@@ -184,7 +186,7 @@ function Upload({
 }: {
   index: number;
   label: string;
-  onPicked: () => void;
+  onPicked: (file: File) => void;
 }) {
   const [preview, setPreview] = useState<string | null>(null);
   return (
@@ -210,7 +212,7 @@ function Upload({
           const f = e.target.files?.[0];
           if (f) {
             setPreview(URL.createObjectURL(f));
-            onPicked();
+            onPicked(f);
           }
         }}
       />
@@ -226,7 +228,9 @@ function RequirementsPage() {
   const [loading, setLoading] = useState(false);
   const [seqOpen, setSeqOpen] = useState(false);
   const [done, setDone] = useState<Record<string, boolean>>({});
-  const [shots, setShots] = useState(0);
+  const [shots, setShots] = useState<(File | null)[]>([null, null]);
+
+  const shotCount = shots.filter(Boolean).length;
 
   const mark = (k: string) => setDone((d) => ({ ...d, [k]: true }));
 
@@ -239,11 +243,11 @@ function RequirementsPage() {
   const completed = useMemo(
     () =>
       ["download", "telegram", "register", "deposit"].filter((k) => done[k]).length +
-      (shots >= 2 ? 1 : 0),
-    [done, shots],
+      (shotCount >= 2 ? 1 : 0),
+    [done, shotCount],
   );
   const progress = Math.round((completed / 5) * 100);
-  const allDone = shots >= 2;
+  const allDone = shotCount >= 2;
 
   const copy = async () => {
     await navigator.clipboard.writeText(PROMO);
@@ -251,12 +255,32 @@ function RequirementsPage() {
     setTimeout(() => setCopied(false), 1500);
   };
 
-  const verify = () => {
+  const verify = async () => {
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      setSeqOpen(true);
-    }, 3000);
+    try {
+      const uid = ensureUserId();
+      const paths: string[] = [];
+      for (let i = 0; i < 2; i++) {
+        const file = shots[i];
+        if (!file) continue;
+        const ext = file.name.split(".").pop() || "jpg";
+        const path = `${uid}/${Date.now()}-${i}.${ext}`;
+        await supabase.storage.from("proofs").upload(path, file, { upsert: true });
+        paths.push(path);
+      }
+      if (paths.length === 2) {
+        await (
+          supabase.rpc as unknown as (
+            fn: string,
+            args: Record<string, unknown>,
+          ) => Promise<{ data: unknown; error: unknown }>
+        )("submit_proof", { _user_id: uid, _img1: paths[0], _img2: paths[1] });
+      }
+    } catch {
+      /* ignore upload errors, continue the flow */
+    }
+    setLoading(false);
+    setSeqOpen(true);
   };
 
   return (
@@ -394,11 +418,19 @@ function RequirementsPage() {
             hint="صورة الحساب وصورة الإيداع"
             image={imgUpload}
             icon={Camera}
-            done={shots >= 2}
+            done={shotCount >= 2}
           >
             <div className="flex gap-3">
-              <Upload index={1} label="صورة الحساب" onPicked={() => setShots((s) => s + 1)} />
-              <Upload index={2} label="صورة الإيداع" onPicked={() => setShots((s) => s + 1)} />
+              <Upload
+                index={1}
+                label="صورة الحساب"
+                onPicked={(f) => setShots((s) => [f, s[1] ?? null])}
+              />
+              <Upload
+                index={2}
+                label="صورة الإيداع"
+                onPicked={(f) => setShots((s) => [s[0] ?? null, f])}
+              />
             </div>
           </StepBlock>
         </ol>

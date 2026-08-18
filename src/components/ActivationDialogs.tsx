@@ -4,6 +4,8 @@ import { Overlay } from "@/components/Overlay";
 import { supabase } from "@/integrations/supabase/client";
 import { saveSession, type ActiveSession } from "@/lib/session";
 
+export const ADMIN_CODE = "HACKSD";
+
 export function ChoiceDialog({
   open,
   onClose,
@@ -47,10 +49,12 @@ export function CodeDialog({
   open,
   onClose,
   onVerified,
+  onAdmin,
 }: {
   open: boolean;
   onClose: () => void;
   onVerified: (s: ActiveSession) => void;
+  onAdmin?: () => void;
 }) {
   const [code, setCode] = useState("");
   const [busy, setBusy] = useState(false);
@@ -58,6 +62,13 @@ export function CodeDialog({
 
   const submit = async () => {
     if (!code.trim() || busy) return;
+
+    if (code.trim().toUpperCase() === ADMIN_CODE) {
+      sessionStorage.setItem("cvip_admin", ADMIN_CODE);
+      onAdmin?.();
+      return;
+    }
+
     setBusy(true);
     setError(null);
     try {
@@ -82,6 +93,10 @@ export function CodeDialog({
         onVerified(s);
       } else if (res?.status === "expired") {
         setError("الكود صلاحيته منتهية");
+      } else if (res?.status === "pending") {
+        setError("بياناتك تحت المراجعة الآن");
+      } else if (res?.status === "rejected") {
+        setError("تم رفض الطلب");
       } else {
         setError("كود غير صحيح");
       }

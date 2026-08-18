@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as GamesRouteImport } from './routes/games'
 import { Route as RequirementsRouteImport } from './routes/requirements'
 import { Route as TermsRouteImport } from './routes/terms'
@@ -18,11 +19,17 @@ import { Route as GameAviatorRouteImport } from './routes/game.aviator'
 import { Route as GameMinesRouteImport } from './routes/game.mines'
 import { Route as GameThimblesRouteImport } from './routes/game.thimbles'
 import { Route as GameWildwestRouteImport } from './routes/game.wildwest'
+import { Route as ApiPublicNotifyRouteImport } from './routes/api/public/notify'
 import { Route as ApiPublicTelegramRouteImport } from './routes/api/public/telegram'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GamesRoute = GamesRouteImport.update({
@@ -65,6 +72,11 @@ const GameWildwestRoute = GameWildwestRouteImport.update({
   path: '/game/wildwest',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicNotifyRoute = ApiPublicNotifyRouteImport.update({
+  id: '/api/public/notify',
+  path: '/api/public/notify',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicTelegramRoute = ApiPublicTelegramRouteImport.update({
   id: '/api/public/telegram',
   path: '/api/public/telegram',
@@ -73,6 +85,7 @@ const ApiPublicTelegramRoute = ApiPublicTelegramRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/games': typeof GamesRoute
   '/requirements': typeof RequirementsRoute
   '/terms': typeof TermsRoute
@@ -81,10 +94,12 @@ export interface FileRoutesByFullPath {
   '/game/mines': typeof GameMinesRoute
   '/game/thimbles': typeof GameThimblesRoute
   '/game/wildwest': typeof GameWildwestRoute
+  '/api/public/notify': typeof ApiPublicNotifyRoute
   '/api/public/telegram': typeof ApiPublicTelegramRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/games': typeof GamesRoute
   '/requirements': typeof RequirementsRoute
   '/terms': typeof TermsRoute
@@ -93,11 +108,13 @@ export interface FileRoutesByTo {
   '/game/mines': typeof GameMinesRoute
   '/game/thimbles': typeof GameThimblesRoute
   '/game/wildwest': typeof GameWildwestRoute
+  '/api/public/notify': typeof ApiPublicNotifyRoute
   '/api/public/telegram': typeof ApiPublicTelegramRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/games': typeof GamesRoute
   '/requirements': typeof RequirementsRoute
   '/terms': typeof TermsRoute
@@ -106,12 +123,14 @@ export interface FileRoutesById {
   '/game/mines': typeof GameMinesRoute
   '/game/thimbles': typeof GameThimblesRoute
   '/game/wildwest': typeof GameWildwestRoute
+  '/api/public/notify': typeof ApiPublicNotifyRoute
   '/api/public/telegram': typeof ApiPublicTelegramRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/admin'
     | '/games'
     | '/requirements'
     | '/terms'
@@ -120,10 +139,12 @@ export interface FileRouteTypes {
     | '/game/mines'
     | '/game/thimbles'
     | '/game/wildwest'
+    | '/api/public/notify'
     | '/api/public/telegram'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/admin'
     | '/games'
     | '/requirements'
     | '/terms'
@@ -132,10 +153,12 @@ export interface FileRouteTypes {
     | '/game/mines'
     | '/game/thimbles'
     | '/game/wildwest'
+    | '/api/public/notify'
     | '/api/public/telegram'
   id:
     | '__root__'
     | '/'
+    | '/admin'
     | '/games'
     | '/requirements'
     | '/terms'
@@ -144,11 +167,13 @@ export interface FileRouteTypes {
     | '/game/mines'
     | '/game/thimbles'
     | '/game/wildwest'
+    | '/api/public/notify'
     | '/api/public/telegram'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRoute
   GamesRoute: typeof GamesRoute
   RequirementsRoute: typeof RequirementsRoute
   TermsRoute: typeof TermsRoute
@@ -157,6 +182,7 @@ export interface RootRouteChildren {
   GameMinesRoute: typeof GameMinesRoute
   GameThimblesRoute: typeof GameThimblesRoute
   GameWildwestRoute: typeof GameWildwestRoute
+  ApiPublicNotifyRoute: typeof ApiPublicNotifyRoute
   ApiPublicTelegramRoute: typeof ApiPublicTelegramRoute
 }
 
@@ -167,6 +193,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/games': {
@@ -225,6 +258,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GameWildwestRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/notify': {
+      id: '/api/public/notify'
+      path: '/api/public/notify'
+      fullPath: '/api/public/notify'
+      preLoaderRoute: typeof ApiPublicNotifyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/telegram': {
       id: '/api/public/telegram'
       path: '/api/public/telegram'
@@ -237,6 +277,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRoute,
   GamesRoute: GamesRoute,
   RequirementsRoute: RequirementsRoute,
   TermsRoute: TermsRoute,
@@ -245,6 +286,7 @@ const rootRouteChildren: RootRouteChildren = {
   GameMinesRoute: GameMinesRoute,
   GameThimblesRoute: GameThimblesRoute,
   GameWildwestRoute: GameWildwestRoute,
+  ApiPublicNotifyRoute: ApiPublicNotifyRoute,
   ApiPublicTelegramRoute: ApiPublicTelegramRoute,
 }
 export const routeTree = rootRouteImport
