@@ -66,13 +66,19 @@ function GamesPage() {
       <div className="mx-auto max-w-md px-4 pt-8">
         <Logo size={120} />
 
-        <div className="mx-auto mt-5 overflow-hidden rounded-2xl border border-primary/40 shadow-[0_0_35px_rgba(144,214,0,0.18)]" style={{ maxWidth: 320 }}>
+        <div
+          className="mx-auto mt-5 overflow-hidden rounded-2xl border border-primary/40 shadow-[0_0_35px_rgba(144,214,0,0.18)]"
+          style={{ width: 280, height: 180 }}
+        >
           <video
             src="https://www.image2url.com/r2/default/videos/1787062476031-24e4168d-512a-415a-acaa-e2da3d6747c3.mp4"
-            controls
+            autoPlay
+            muted
+            loop
             playsInline
-            preload="metadata"
-            className="h-auto w-full"
+            controls
+            preload="auto"
+            className="h-full w-full object-cover"
           />
         </div>
 
