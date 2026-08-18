@@ -230,6 +230,12 @@ function RequirementsPage() {
 
   const mark = (k: string) => setDone((d) => ({ ...d, [k]: true }));
 
+  const openPlatform = (k: string) => {
+    const url = PLATFORM_LINKS[platform] ?? PLATFORM_LINKS["1xBet"];
+    if (url) window.open(url, "_blank", "noopener,noreferrer");
+    mark(k);
+  };
+
   const completed = useMemo(
     () =>
       ["download", "telegram", "register", "deposit"].filter((k) => done[k]).length +
