@@ -349,7 +349,7 @@ function RequirementsPage() {
               label="التسجيل الآن"
               icon={Ticket}
               done={!!done["register"]}
-              onClick={() => mark("register")}
+              onClick={() => openPlatform("register")}
             />
           </StepBlock>
 
