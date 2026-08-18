@@ -61,9 +61,23 @@ export function CodeDialog({
     setBusy(true);
     setError(null);
     try {
-      const res = await verify({ data: { code } });
-      if (res.status === "ok") {
-        const s = { code: code.trim().toUpperCase(), userId: res.userId, expiresAt: res.expiresAt };
+      const { data, error: rpcError } = await (
+        supabase.rpc as unknown as (
+          fn: string,
+          args: Record<string, unknown>,
+        ) => Promise<{
+          data: { status: string; user_id: string | null; expires_at: string | null }[] | null;
+          error: unknown;
+        }>
+      )("verify_activation_code", { _code: code });
+      if (rpcError) throw rpcError;
+      const res = data?.[0];
+      if (res?.status === "ok") {
+        const s = {
+          code: code.trim().toUpperCase(),
+          userId: res.user_id ?? "",
+          expiresAt: res.expires_at ?? "",
+        };
         saveSession(s);
         onVerified(s);
       } else if (res.status === "expired") {
