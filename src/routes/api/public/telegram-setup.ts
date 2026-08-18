@@ -8,7 +8,8 @@ export const Route = createFileRoute("/api/public/telegram-setup")({
       GET: async ({ request }) => {
         const token = getBotToken();
         const origin = new URL(request.url).origin;
-        const url = `${origin}/api/public/telegram`;
+        const url =
+          new URL(request.url).searchParams.get("url") ?? `${origin}/api/public/telegram`;
 
         const res = await fetch(`https://api.telegram.org/bot${token}/setWebhook`, {
           method: "POST",
