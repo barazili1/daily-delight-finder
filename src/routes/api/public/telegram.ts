@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { WELCOME_JPEG_B64 } from "@/lib/telegram-assets.server";
+import { getBotToken } from "@/lib/bot-token.server";
 
 const API = (token: string, method: string) => `https://api.telegram.org/bot${token}/${method}`;
 
@@ -52,8 +53,7 @@ export const Route = createFileRoute("/api/public/telegram")({
   server: {
     handlers: {
       POST: async ({ request }) => {
-        const token = process.env["TELEGRAM_BOT_TOKEN"];
-        if (!token) return new Response("no token", { status: 500 });
+        const token = getBotToken();
 
         const update = (await request.json()) as {
           message?: { chat: { id: number }; from?: { first_name?: string }; text?: string };
