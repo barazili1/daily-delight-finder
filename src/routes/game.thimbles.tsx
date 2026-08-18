@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useRequireSession } from "@/lib/guard";
 import { useState } from "react";
 import { Play, RotateCcw } from "lucide-react";
 import { TopBar } from "@/components/TopBar";
@@ -23,6 +24,7 @@ export const Route = createFileRoute("/game/thimbles")({
 });
 
 function ThimblesGame() {
+  useRequireSession();
   const [spinning, setSpinning] = useState(false);
   const [winner, setWinner] = useState<number | null>(null);
 

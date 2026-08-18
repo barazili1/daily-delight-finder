@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useRequireSession } from "@/lib/guard";
 import { useEffect, useRef, useState } from "react";
 import { Play, RotateCcw } from "lucide-react";
 import { TopBar } from "@/components/TopBar";
@@ -32,6 +33,7 @@ function pointAt(t: number) {
 }
 
 function AviatorGame() {
+  useRequireSession();
   const [odd, setOdd] = useState(1);
   const [progress, setProgress] = useState(0);
   const raf = useRef<number | null>(null);
