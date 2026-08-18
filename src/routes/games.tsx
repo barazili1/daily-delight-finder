@@ -169,7 +169,16 @@ function GamesPage() {
         onUse={onUse}
         onGet={onGet}
       />
-      <CodeDialog open={codeOpen} onClose={() => setCodeOpen(false)} onVerified={onVerified} />
+      <CodeDialog
+        open={codeOpen}
+        onClose={() => setCodeOpen(false)}
+        onVerified={onVerified}
+        onAdmin={() => {
+          setCodeOpen(false);
+          setChoice(null);
+          navigate({ to: "/admin" });
+        }}
+      />
 
       <LoadingDialog open={loading} />
     </main>
