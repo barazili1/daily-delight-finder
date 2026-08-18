@@ -52,7 +52,6 @@ export function CodeDialog({
   onClose: () => void;
   onVerified: (s: ActiveSession) => void;
 }) {
-  const verify = useServerFn(verifyActivationCode);
   const [code, setCode] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
