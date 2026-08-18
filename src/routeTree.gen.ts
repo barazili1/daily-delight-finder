@@ -19,7 +19,6 @@ import { Route as GameMinesRouteImport } from './routes/game.mines'
 import { Route as GameThimblesRouteImport } from './routes/game.thimbles'
 import { Route as GameWildwestRouteImport } from './routes/game.wildwest'
 import { Route as ApiPublicTelegramRouteImport } from './routes/api/public/telegram'
-import { Route as ApiPublicTelegramSetupRouteImport } from './routes/api/public/telegram-setup'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -71,11 +70,6 @@ const ApiPublicTelegramRoute = ApiPublicTelegramRouteImport.update({
   path: '/api/public/telegram',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiPublicTelegramSetupRoute = ApiPublicTelegramSetupRouteImport.update({
-  id: '/api/public/telegram-setup',
-  path: '/api/public/telegram-setup',
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -88,7 +82,6 @@ export interface FileRoutesByFullPath {
   '/game/thimbles': typeof GameThimblesRoute
   '/game/wildwest': typeof GameWildwestRoute
   '/api/public/telegram': typeof ApiPublicTelegramRoute
-  '/api/public/telegram-setup': typeof ApiPublicTelegramSetupRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -101,7 +94,6 @@ export interface FileRoutesByTo {
   '/game/thimbles': typeof GameThimblesRoute
   '/game/wildwest': typeof GameWildwestRoute
   '/api/public/telegram': typeof ApiPublicTelegramRoute
-  '/api/public/telegram-setup': typeof ApiPublicTelegramSetupRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -115,7 +107,6 @@ export interface FileRoutesById {
   '/game/thimbles': typeof GameThimblesRoute
   '/game/wildwest': typeof GameWildwestRoute
   '/api/public/telegram': typeof ApiPublicTelegramRoute
-  '/api/public/telegram-setup': typeof ApiPublicTelegramSetupRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -130,7 +121,6 @@ export interface FileRouteTypes {
     | '/game/thimbles'
     | '/game/wildwest'
     | '/api/public/telegram'
-    | '/api/public/telegram-setup'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -143,7 +133,6 @@ export interface FileRouteTypes {
     | '/game/thimbles'
     | '/game/wildwest'
     | '/api/public/telegram'
-    | '/api/public/telegram-setup'
   id:
     | '__root__'
     | '/'
@@ -156,7 +145,6 @@ export interface FileRouteTypes {
     | '/game/thimbles'
     | '/game/wildwest'
     | '/api/public/telegram'
-    | '/api/public/telegram-setup'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -170,7 +158,6 @@ export interface RootRouteChildren {
   GameThimblesRoute: typeof GameThimblesRoute
   GameWildwestRoute: typeof GameWildwestRoute
   ApiPublicTelegramRoute: typeof ApiPublicTelegramRoute
-  ApiPublicTelegramSetupRoute: typeof ApiPublicTelegramSetupRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -245,13 +232,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicTelegramRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/telegram-setup': {
-      id: '/api/public/telegram-setup'
-      path: '/api/public/telegram-setup'
-      fullPath: '/api/public/telegram-setup'
-      preLoaderRoute: typeof ApiPublicTelegramSetupRouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
 
@@ -266,7 +246,6 @@ const rootRouteChildren: RootRouteChildren = {
   GameThimblesRoute: GameThimblesRoute,
   GameWildwestRoute: GameWildwestRoute,
   ApiPublicTelegramRoute: ApiPublicTelegramRoute,
-  ApiPublicTelegramSetupRoute: ApiPublicTelegramSetupRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
