@@ -301,7 +301,7 @@ function RequirementsPage() {
               label="تحميل"
               icon={Download}
               done={!!done["download"]}
-              onClick={() => mark("download")}
+              onClick={() => openPlatform("download")}
             />
           </StepBlock>
 
